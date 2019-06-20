@@ -21,11 +21,12 @@ export class HomeComponent implements OnInit {
   }
 
   refresh(control: boolean):void {
-    this.$items = this.itemService.getItems().pipe();
+    this.$items.subscribe(res => {
+      console.log(res);
+    });
   }
 
-  onChange(newValue, item: Item):void{
-    // console.log(newValue, item);
+  onChange(item: Item):void{
     this.itemService.updateItem(item).subscribe(res=>{
       console.log(res);
     });
