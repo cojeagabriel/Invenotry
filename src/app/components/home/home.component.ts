@@ -10,7 +10,7 @@ import { Item } from 'src/app/types/item';
 })
 export class HomeComponent implements OnInit {
 
-  private $items: Observable<Item[]>;
+  $items: Observable<Item[]>;
 
   constructor(
     private itemService: ItemService
