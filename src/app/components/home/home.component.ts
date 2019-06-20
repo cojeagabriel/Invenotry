@@ -20,4 +20,15 @@ export class HomeComponent implements OnInit {
     this.$items = this.itemService.getItems().pipe();
   }
 
+  refresh(control: boolean):void {
+    this.$items = this.itemService.getItems().pipe();
+  }
+
+  onChange(newValue, item: Item):void{
+    // console.log(newValue, item);
+    this.itemService.updateItem(item).subscribe(res=>{
+      console.log(res);
+    });
+  }
+
 }

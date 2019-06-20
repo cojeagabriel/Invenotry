@@ -21,7 +21,11 @@ export class ItemService {
     return this.http.get<Item>(`${environment.apiUrl}/api/items/${id}`);
   }
 
-  // createItem(item: Item): Observable<Item>{
-  //   return this.http.post()
-  // }
+  addItem(item: Item): Observable<Item>{
+    return this.http.post<Item>(`${environment.apiUrl}/api/items`, item);
+  }
+
+  updateItem(item: Item): Observable<Item>{
+    return this.http.put<Item>(`${environment.apiUrl}/api/items/${item._id}`, item);
+  }
 }
