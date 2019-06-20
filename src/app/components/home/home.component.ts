@@ -1,7 +1,9 @@
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { ItemService } from './../../services/item.service';
 import { Component, OnInit } from '@angular/core';
 import { Item } from 'src/app/types/item';
+import { untilDestroyed } from 'ngx-take-until-destroy';
+import { startWith, switchMap, shareReplay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -10,26 +12,37 @@ import { Item } from 'src/app/types/item';
 })
 export class HomeComponent implements OnInit {
 
-  $items: Observable<Item[]>;
+  refresh$: Subject<void>;
+  items$: Observable<Item[]>;
 
   constructor(
     private itemService: ItemService
   ) { }
 
   ngOnInit() {
-    this.$items = this.itemService.getItems().pipe();
+    this.refresh$ = new Subject();
+    this.items$ = this.refresh$.pipe(
+      startWith(undefined),
+      switchMap(() => this.items$ = this.itemService.getItems()),
+      shareReplay(1)
+    );
   }
 
   refresh(control: boolean):void {
-    this.$items.subscribe(res => {
+    this.refresh$.next();
+  }
+
+  onChange(item: Item):void{
+    this.itemService.updateItem(item).pipe(
+      untilDestroyed(this)
+    ).subscribe(res=>{
       console.log(res);
     });
   }
 
-  onChange(item: Item):void{
-    this.itemService.updateItem(item).subscribe(res=>{
-      console.log(res);
-    });
+  trackById(index: number, item: Item):string {
+    console.log(index, item._id);
+    return item._id;
   }
 
 }
