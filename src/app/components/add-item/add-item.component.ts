@@ -21,9 +21,15 @@ export class AddItemComponent implements OnInit {
       width: '600px',
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().pipe(
+      untilDestroyed(this)
+    ).subscribe(result => {
       this.itemAdded.emit(true);
     });
+  }
+
+  ngOnDestroy() {
+
   }
 
 }

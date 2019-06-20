@@ -1,6 +1,6 @@
 import { Observable, Subject } from 'rxjs';
 import { ItemService } from './../../services/item.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Item } from 'src/app/types/item';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { startWith, switchMap, shareReplay } from 'rxjs/operators';
@@ -33,6 +33,7 @@ export class HomeComponent implements OnInit {
   }
 
   onChange(item: Item):void{
+    console.log(item);
     this.itemService.updateItem(item).pipe(
       untilDestroyed(this)
     ).subscribe(res=>{
@@ -41,8 +42,12 @@ export class HomeComponent implements OnInit {
   }
 
   trackById(index: number, item: Item):string {
-    console.log(index, item._id);
+    // console.log(index, item._id);
     return item._id;
+  }
+
+  ngOnDestroy() {
+
   }
 
 }
