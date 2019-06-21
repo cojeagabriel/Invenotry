@@ -14,8 +14,7 @@ export class AddItemModalComponent implements OnInit {
   onAdd = new EventEmitter();
 
   item: Item = {
-    name: '',
-    available: false
+    name: ''
   }
 
   constructor(
@@ -27,6 +26,7 @@ export class AddItemModalComponent implements OnInit {
   }
 
   cancel(): void {
+    // this.onAdd.emit(undefined);
     this.dialogRef.close();
   }
 
