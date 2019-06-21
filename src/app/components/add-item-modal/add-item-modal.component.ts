@@ -33,9 +33,6 @@ export class AddItemModalComponent implements OnInit {
   addItem(): void{
     if(this.item.name){
       this.itemServie.addItem(this.item)
-        .pipe(
-          untilDestroyed(this)
-        )
         .subscribe(res => {
           this.onAdd.emit(undefined);
         })

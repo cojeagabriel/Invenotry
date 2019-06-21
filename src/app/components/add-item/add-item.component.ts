@@ -10,7 +10,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 })
 export class AddItemComponent implements OnInit {
 
-  @Output() itemAdded = new EventEmitter<boolean>();
+  @Output() itemAdded = new EventEmitter<any>();
 
   constructor(public dialog: MatDialog) { }
 
@@ -21,15 +21,12 @@ export class AddItemComponent implements OnInit {
       width: '600px',
     });
 
-    const sub = dialogRef.componentInstance.onAdd.subscribe((data) => {
-      console.log("here", data);
+    dialogRef.componentInstance.onAdd.subscribe((data) => {
       this.itemAdded.emit(data);
     });
 
-    dialogRef.afterClosed().pipe(
-      untilDestroyed(this)
-    ).subscribe(result => {
-      sub.unsubscribe();
+    dialogRef.afterClosed().subscribe(result => {
+
     });
   }
 

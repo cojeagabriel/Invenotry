@@ -29,12 +29,10 @@ export class HomeComponent implements OnInit {
   }
 
   refresh(control: boolean):void {
-    console.log("refresh here");
     this.refresh$.next();
   }
 
   onChange(item: Item):void{
-    console.log(item);
     this.itemService.updateItem(item).pipe(
       untilDestroyed(this)
     ).subscribe(res => {
