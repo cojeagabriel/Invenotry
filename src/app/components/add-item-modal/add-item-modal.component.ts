@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ItemService } from 'src/app/services/item.service';
 import { Item } from 'src/app/types/item';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 
 @Component({
   selector: 'app-add-item-modal',
@@ -9,6 +10,8 @@ import { Item } from 'src/app/types/item';
   styleUrls: ['./add-item-modal.component.scss']
 })
 export class AddItemModalComponent implements OnInit {
+
+  onAdd = new EventEmitter();
 
   item: Item = {
     name: '',
@@ -28,11 +31,21 @@ export class AddItemModalComponent implements OnInit {
   }
 
   addItem(): void{
-    this.itemServie.addItem(this.item)
-      .subscribe(res=>{
-        console.log(res);
-      })
+    if(this.item.name){
+      this.itemServie.addItem(this.item)
+        .pipe(
+          untilDestroyed(this)
+        )
+        .subscribe(res => {
+          this.onAdd.emit(undefined);
+        })
+    }
+    
     this.dialogRef.close();
+  }
+
+  ngOnDestroy() {
+
   }
 
 }

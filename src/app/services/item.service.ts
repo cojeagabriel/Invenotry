@@ -28,4 +28,8 @@ export class ItemService {
   updateItem(item: Item): Observable<Item>{
     return this.http.put<Item>(`${environment.apiUrl}/api/items/${item._id}`, item);
   }
+
+  deleteItem(id: string): Observable<Item>{
+    return this.http.delete<Item>(`${environment.apiUrl}/api/items/${id}`);
+  }
 }

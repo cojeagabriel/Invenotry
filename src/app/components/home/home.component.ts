@@ -29,6 +29,7 @@ export class HomeComponent implements OnInit {
   }
 
   refresh(control: boolean):void {
+    console.log("refresh here");
     this.refresh$.next();
   }
 
@@ -36,13 +37,19 @@ export class HomeComponent implements OnInit {
     console.log(item);
     this.itemService.updateItem(item).pipe(
       untilDestroyed(this)
-    ).subscribe(res=>{
-      console.log(res);
+    ).subscribe(res => {
+    });
+  }
+
+  onSwipeRight(event, item: Item):void {
+    this.itemService.deleteItem(item._id).pipe(
+      untilDestroyed(this)
+    ).subscribe(res => {
+      this.refresh$.next();
     });
   }
 
   trackById(index: number, item: Item):string {
-    // console.log(index, item._id);
     return item._id;
   }
 

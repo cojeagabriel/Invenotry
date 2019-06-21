@@ -21,10 +21,15 @@ export class AddItemComponent implements OnInit {
       width: '600px',
     });
 
+    const sub = dialogRef.componentInstance.onAdd.subscribe((data) => {
+      console.log("here", data);
+      this.itemAdded.emit(data);
+    });
+
     dialogRef.afterClosed().pipe(
       untilDestroyed(this)
     ).subscribe(result => {
-      this.itemAdded.emit(true);
+      sub.unsubscribe();
     });
   }
 
